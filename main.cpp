@@ -15,7 +15,7 @@ struct Shape
 struct ShapeVtable
 {
     //Pure Virtual functions.
-    void (*GetArea) (Shape*);   //Get area of each inherited shape.
+    double (*GetArea) (Shape*);   //Get area of each inherited shape.
     void (*PrintInfo) (Shape*); //Output information of each inherited shape.
 };
 
@@ -23,7 +23,8 @@ struct ShapeVtable
 double GetArea(Shape* shape)
 {
     //Call the function for specific object derived from the base class.
-    shape->vtable->GetArea(shape);
+    //shape->vtable->GetArea(shape);
+    return (shape->vtable->GetArea(shape));
 }
 
 //Virtual Function to be matched with each shape derived from the class with its own implementation.
@@ -60,10 +61,10 @@ void PrintCircle(Circle* circle)
 
 //Object of struct ShapeVtable to convert derived object to base object which is called up cast.
 ShapeVtable circle_vtable=
-        {
-                (void(*) (Shape*)) CircleArea,  //Typecasting Circle object to Shape.
-                (void(*) (Shape*)) PrintCircle  //Typecasting Circle object to Shape.
-        };
+{
+    (double(*) (Shape*)) CircleArea,  //Typecasting Circle object to Shape.
+    (void(*) (Shape*)) PrintCircle  //Typecasting Circle object to Shape.
+};
 
 //Constructor of derived class Circle to initialize its attributes.
 void CircleInitialize(Circle* circle, int radius)
@@ -78,7 +79,7 @@ void CircleInitialize(Circle* circle, int radius)
 struct Rectangle
 {
     Shape parent;    //Object from Shape Interface to be able to access its functions.
-    int height;     //height of Rectangle.
+    int height;     //Height of Rectangle.
     int width;      //Width of Rectangle.
     double area;    //Area of Rectangle.
 };
@@ -102,10 +103,10 @@ void PrintRectangle(Rectangle* rectangle)
 
 //Object of struct ShapeVtable to convert derived object to base object which is called up cast.
 ShapeVtable rectangle_vtable=
-        {
-                (void(*) (Shape*)) RectangleArea,   //Typecasting rectangle object to Shape.
-                (void(*) (Shape*)) PrintRectangle   //Typecasting rectangle object to Shape.
-        };
+{
+    (double(*) (Shape*)) RectangleArea,   //Typecasting rectangle object to Shape.
+    (void(*) (Shape*)) PrintRectangle   //Typecasting rectangle object to Shape.
+};
 
 //Constructor of derived class Rectangle to initialize its attributes.
 void RectangleInitialize(Rectangle* rectangle, int height, int width)
@@ -122,15 +123,15 @@ struct Ellipse
 {
     Shape parent;   //Object from Shape Interface to be able to access its functions.
     int r1;         //First radius of Ellipse.
-    int r2;         //Second radius of Ellipse.
+    int r2;         //Second radius of Ellipse. v
     double area;    //Area of Ellipse.
 };
 
 //Double function to calculate area of ellipse. Also, Overriding Function implements the virtual function (GetArea) in the interface.
 double EllipseArea(Ellipse* ellipse )
 {
-    //Area of Ellipse = Radius1 * Radius2.
-    ellipse->area = ellipse->r1 * ellipse->r2;
+    //Area of Ellipse = PI * Radius1 * Radius2.
+    ellipse->area = M_PI * ellipse->r1 * ellipse->r2;
     return ellipse->area;
 }
 
@@ -145,10 +146,10 @@ void PrintEllipse(Ellipse* ellipse)
 
 //Object of struct ShapeVtable to convert derived object to base object which is called up cast.
 ShapeVtable ellipse_vtable=
-        {
-                (void(*) (Shape*)) EllipseArea,     //Typecasting ellipse object to Shape.
-                (void(*) (Shape*)) PrintEllipse     //Typecasting ellipse object to Shape.
-        };
+{
+    (double(*) (Shape*)) EllipseArea,     //Typecasting ellipse object to Shape.
+    (void(*) (Shape*)) PrintEllipse     //Typecasting ellipse object to Shape.
+};
 
 //Constructor of derived class Ellipse to initialize its attributes.
 void EllipseInitialize(Ellipse* ellipse, int r1, int r2)
